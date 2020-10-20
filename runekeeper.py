@@ -3,8 +3,10 @@ import logic as lg
 from tkinter import filedialog
 from tkinter import messagebox
 import os
+from PIL import Image,  ImageTk
 
 THIS_FOLDER = os.path.dirname(os.path.abspath(__file__))
+IMAGE_PATH = f"{THIS_FOLDER}/diablogo.jpg"
 
 class MainApp(tk.Frame):
     def __init__(self, parent, *args, **kwargs):
@@ -12,20 +14,23 @@ class MainApp(tk.Frame):
         self.parent = parent
         
 
-        self.browse_frame = tk.Frame(self, width=400, height=100, pady=20, padx=10)
+        
 
         ##Declaring buttons and text area for the char and stash selection + labels
+        #Top Logo
+        self.img = ImageTk.PhotoImage(Image.open(IMAGE_PATH))
+        self.logo_panel = tk.Label(self, image = self.img)
         #Character file browse
         self.char_browse_button = tk.Button(self, text="Browse...", command=self.char_browse)       
-        self.char_browse_text_area = tk.Entry(self, width=40, )
+        self.char_browse_text_area = tk.Entry(self, width=60, )
         self.char_browse_label = tk.Label(self, text="Import your Diablo 2 (.d2s) save file")
         ##Plugy Personal Stash Browse
         self.plugy_browse_button = tk.Button(self, text="Browse...", command=self.plugy_stash_browse, state=tk.DISABLED)
-        self.plugy_browse_text_area = tk.Entry(self, width=40, state=tk.DISABLED )
+        self.plugy_browse_text_area = tk.Entry(self, width=60, state=tk.DISABLED )
         self.plugy_browse_label = tk.Label(self, text="Import your Plugy Personal Stash (.d2x) save file")        
         ##Plugy Shared Stash Browse
         self.stash_browse_button = tk.Button(self, text="Browse...", command=self.shared_stash_browse, state=tk.DISABLED)
-        self.stash_browse_text_area = tk.Entry(self, width=40, state=tk.DISABLED )
+        self.stash_browse_text_area = tk.Entry(self, width=60, state=tk.DISABLED )
         self.stash_browse_label = tk.Label(self, text="Import your Plugy Shared Stash (.sss) file", state=tk.DISABLED)
         
         ## Submit button
@@ -44,26 +49,29 @@ class MainApp(tk.Frame):
 
         ## Rendering widgets ##
         #Row 0
-        self.char_browse_label.grid(row=0, column=0, padx=10, sticky=tk.S+tk.W)
+        self.logo_panel.grid(row=0, column=0, padx=10, pady=(5,50), sticky=tk.N, columnspan=2)
         #Row 1
-        self.char_browse_text_area.grid(row=1, column=0, padx=10, pady=5, sticky=tk.N+tk.W,)
-        self.char_browse_button.grid(row=1, column=1, pady=5, sticky=tk.N+tk.E,)
+        self.char_browse_label.grid(row=1, column=0, padx=10, sticky=tk.S+tk.W)
         #Row 2
-        self.plugy_stash_checkbutton.grid(row=2, column=0, padx=5, pady=15, sticky=tk.S+tk.W)
+        self.char_browse_text_area.grid(row=2, column=0, padx=10, pady=5, sticky=tk.N+tk.W,)
+        self.char_browse_button.grid(row=2, column=1, pady=5, sticky=tk.N+tk.E,)
         #Row 3
-        self.plugy_browse_label.grid(row=3, column=0, padx=10, sticky=tk.S+tk.W)
+        self.plugy_stash_checkbutton.grid(row=3, column=0, padx=5, pady=15, sticky=tk.S+tk.W)
         #Row 4
-        self.plugy_browse_text_area.grid(row=4, column=0, padx=10, pady=5, sticky=tk.N+tk.W,)
-        self.plugy_browse_button.grid(row=4, column=1, pady=10, sticky=tk.S+tk.E)
+        self.plugy_browse_label.grid(row=4, column=0, padx=10, sticky=tk.S+tk.W)
         #Row 5
-        self.shared_stash_checkbutton.grid(row=5, column=0, padx=5, pady=15, sticky=tk.S+tk.W)
+        self.plugy_browse_text_area.grid(row=5, column=0, padx=10, pady=5, sticky=tk.N+tk.W,)
+        self.plugy_browse_button.grid(row=5, column=1, pady=10, sticky=tk.S+tk.E)
         #Row 6
-        self.stash_browse_label.grid(row=6, column=0, padx=10, sticky=tk.S+tk.W)
+        self.shared_stash_checkbutton.grid(row=6, column=0, padx=5, pady=15, sticky=tk.S+tk.W)
         #Row 7
-        self.stash_browse_text_area.grid(row=7, column=0, padx=10, pady=5, sticky=tk.N+tk.W,)
-        self.stash_browse_button.grid(row=7, column=1, pady=5, sticky=tk.N+tk.E,)
+        self.stash_browse_label.grid(row=7, column=0, padx=10, sticky=tk.S+tk.W)
         #Row 8
-        self.open_files_button.grid(row=8, column=1, pady=10, sticky=tk.S+tk.E)
+        self.stash_browse_text_area.grid(row=8, column=0, padx=10, pady=5, sticky=tk.N+tk.W,)
+        self.stash_browse_button.grid(row=8, column=1, pady=5, sticky=tk.N+tk.E,)
+        #Row 9
+        self.open_files_button.grid(row=9, column=1, pady=10, sticky=tk.S+tk.E)
+        
 
 
 
@@ -165,9 +173,9 @@ class MainApp(tk.Frame):
 
 def main():
     root = tk.Tk()
-    MainApp(root).grid(column=0, row=0, padx=20, pady=20)
+    MainApp(root).grid(column=0, row=0, padx=20, pady=10)
     root.title("Diablo II RuneKeeper")
-    root.geometry("600x400")
+    root.geometry("700x600") # width x height
     root.mainloop()
 
 
