@@ -173,7 +173,7 @@ class MainApp(tk.Frame):
 
 def main():
     root = tk.Tk()
-    MainApp(root).grid(column=0, row=0, padx=20, pady=10)
+    MainApp(root).grid(row=0, column=0, padx=20, pady=10)
     root.title("Diablo II RuneKeeper")
     root.geometry("700x600") # width x height
     root.mainloop()
