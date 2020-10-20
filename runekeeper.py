@@ -8,20 +8,165 @@ THIS_FOLDER = os.path.dirname(os.path.abspath(__file__))
 
 class MainApp(tk.Frame):
     def __init__(self, parent, *args, **kwargs):
-        ##Root, title and window size
         tk.Frame.__init__(self, parent, *args, **kwargs)
         self.parent = parent
         
 
+        self.browse_frame = tk.Frame(self, width=400, height=100, pady=20, padx=10)
+
+        ##Declaring buttons and text area for the char and stash selection + labels
+        #Character file browse
+        self.char_browse_button = tk.Button(self, text="Browse...", command=self.char_browse)       
+        self.char_browse_text_area = tk.Entry(self, width=40, )
+        self.char_browse_label = tk.Label(self, text="Import your Diablo 2 (.d2s) save file")
+        ##Plugy Personal Stash Browse
+        self.plugy_browse_button = tk.Button(self, text="Browse...", command=self.plugy_stash_browse, state=tk.DISABLED)
+        self.plugy_browse_text_area = tk.Entry(self, width=40, state=tk.DISABLED )
+        self.plugy_browse_label = tk.Label(self, text="Import your Plugy Personal Stash (.d2x) save file")        
+        ##Plugy Shared Stash Browse
+        self.stash_browse_button = tk.Button(self, text="Browse...", command=self.shared_stash_browse, state=tk.DISABLED)
+        self.stash_browse_text_area = tk.Entry(self, width=40, state=tk.DISABLED )
+        self.stash_browse_label = tk.Label(self, text="Import your Plugy Shared Stash (.sss) file", state=tk.DISABLED)
+        
+        ## Submit button
+        self.open_files_button = tk.Button(self, text="Open", command=self.open_files)
+        
+        
+        
+        ##Check button to add Plugy personal and shared stash
+        self.shared_stash_checked = tk.IntVar()
+        self.shared_stash_checkbutton = tk.Checkbutton(self, text="Add Plugy Shared Stash", variable=self.shared_stash_checked, onvalue=1, command=self.add_shared_stash, state=tk.DISABLED)
+
+        self.plugy_stash_checked = tk.IntVar()
+        self.plugy_stash_checkbutton = tk.Checkbutton(self, text="Add Plugy Personal Stash", variable=self.plugy_stash_checked, onvalue=1, command=self.add_plugy_stash)
+        
+
+
+        ##Rtk.tk.ENDering widgets
+        self.char_browse_text_area.grid(column=0, row=1, padx=10, pady=5, sticky=tk.N+tk.W,)
+        self.stash_browse_text_area.grid(column=0, row=7, padx=10, pady=5, sticky=tk.N+tk.W,)
+        self.char_browse_button.grid(row=1, column=1, pady=5, sticky=tk.N+tk.E,) 
+        self.stash_browse_button.grid(row=7, column=1, pady=5, sticky=tk.N+tk.E,)
+        self.open_files_button.grid(row=8, column=1, pady=10, sticky=tk.S+tk.E)
+        self.char_browse_label.grid(row=0, column=0, padx=10, sticky=tk.S+tk.W)
+        self.stash_browse_label.grid(row=6, column=0, padx=10, sticky=tk.S+tk.W)
+        self.shared_stash_checkbutton.grid(row=5, column=0, padx=5, pady=15, sticky=tk.S+tk.W)
+        self.plugy_stash_checkbutton.grid(row=2, column=0, padx=5, pady=15, sticky=tk.S+tk.W)
+        self.plugy_browse_button.grid(row=4, column=1, pady=10, sticky=tk.S+tk.E)
+        self.plugy_browse_text_area.grid(column=0, row=4, padx=10, pady=5, sticky=tk.N+tk.W,)
+        self.plugy_browse_label.grid(row=3, column=0, padx=10, sticky=tk.S+tk.W)
 
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+    def char_browse(self):
+        ##deletes anything already entered
+        self.char_browse_text_area.delete(0, tk.END)
+        ##opens browse dialog window
+        ###OPENS THIS FOLDER FOR TESTING PURPOSES, NEED TO CHANGE
+        self.filename = filedialog.askopenfilename(initialdir=THIS_FOLDER, title="Select a file", filetypes=(("Diablo 2 Save Files", "*.d2s"),("All Files", "*.*")))
+        self.char_browse_text_area.insert(0, self.filename)
+
+    def plugy_stash_browse(self):
+        ##deletes anything already entered
+        self.plugy_browse_text_area.delete(0, tk.END)
+        ##opens browse dialog window
+        ###OPENS THIS FOLDER FOR TESTING PURPOSES, NEED TO CHANGE
+        self.filename = filedialog.askopenfilename(initialdir=THIS_FOLDER, title="Select a file", filetypes=(("Plugy Personal Stash Files", "*.d2x"),("All Files", "*.*")))
+        self.plugy_browse_text_area.insert(0, self.filename)
+
+
+
+
+    def shared_stash_browse(self):
+        ##deletes anything already entered
+        self.stash_browse_text_area.delete(0, tk.END)
+        ##opens browse dialog window
+        ###OPENS THIS FOLDER FOR TESTING PURPOSES, NEED TO CHANGE
+        self.filename = filedialog.askopenfilename(initialdir=THIS_FOLDER, title="Select a file", filetypes=(("Plugy Shared Stash Files", "*.sss"),("All Files", "*.*")))
+        self.stash_browse_text_area.insert(0, self.filename)
+
+    def open_files(self): 
+        ##gets paths for stash and char files
+        char_path = self.char_browse_text_area.get()
+        plugy_path = self.plugy_browse_text_area.get()
+        shared_path = self.stash_browse_text_area.get()
+        ##stk.ENDs paths to logic module to check if they are correct file types
+        self.load_files_check(char_path, plugy_path, shared_path)
+
+    
+
+    def add_shared_stash(self):
+        if self.shared_stash_checked.get() == 1:
+            self.stash_browse_text_area.config(state=tk.NORMAL)
+            self.stash_browse_button.config(state=tk.NORMAL)
+            self.stash_browse_label.config(state=tk.NORMAL)
+        else:
+            self.stash_browse_text_area.config(state=tk.DISABLED)
+            self.stash_browse_button.config(state=tk.DISABLED)
+            self.stash_browse_label.config(state=tk.DISABLED)
+
+
+    def add_plugy_stash(self):
+        if self.plugy_stash_checked.get() == 1:
+            self.plugy_browse_text_area.config(state=tk.NORMAL)
+            self.plugy_browse_button.config(state=tk.NORMAL)
+            self.plugy_browse_label.config(state=tk.NORMAL)
+            self.shared_stash_checkbutton.config(state=tk.NORMAL)
+        else:
+            self.shared_stash_checkbutton.deselect()
+            self.plugy_browse_text_area.config(state=tk.DISABLED)
+            self.plugy_browse_button.config(state=tk.DISABLED)
+            self.plugy_browse_label.config(state=tk.DISABLED)
+            self.stash_browse_text_area.config(state=tk.DISABLED)
+            self.stash_browse_button.config(state=tk.DISABLED)
+            self.stash_browse_label.config(state=tk.DISABLED)
+            self.shared_stash_checkbutton.config(state=tk.DISABLED)
+
+
+
+
+    def check_file_extension(self, path, ext, display_name):
+        if os.path.splitext(path)[1] != (ext) or len(os.path.splitext(path)[1]) == 0:
+            messagebox.showerror("Notification", f"Please select a {ext} {display_name}.")
+        else:
+            return False
+
+
+    def load_files_check(self, char_path, plugy_path, shared_path):
+        validate_char_path = self.check_file_extension(char_path, ".d2s", "Diablo II save file")
+        if self.plugy_stash_checked.get() == 0:
+            if validate_char_path == False:
+                is_plugy_added = False
+                is_shared_added = False
+                lg.load_files(char_path, plugy_path, shared_path, is_plugy_added, is_shared_added)
+        elif self.shared_stash_checked.get() == 1:
+            if self.check_file_extension(shared_path, ".sss", "Plugy shared stash file") == False:
+                is_plugy_added = True
+                is_shared_added = True
+                lg.load_files(char_path, plugy_path, shared_path, is_plugy_added, is_shared_added)
+        elif self.plugy_stash_checked.get() == 1:
+            if self.check_file_extension(plugy_path, ".d2x", "Plugy personal stash file") == False:
+                is_plugy_added = True
+                is_shared_added = False
+                lg.load_files(char_path, plugy_path, shared_path, is_plugy_added, is_shared_added)
 
 
 if __name__ == "__main__":
     root = tk.Tk()
-    MainApp(root).pack(side="top", fill="both", expand=True)
+    MainApp(root).grid(column=0, row=0, padx=20, pady=20)
     root.title("Diablo II RuneKeeper")
     root.geometry("600x400")
     root.mainloop()
