@@ -42,29 +42,28 @@ class MainApp(tk.Frame):
         
 
 
-        ##Rtk.tk.ENDering widgets
-        self.char_browse_text_area.grid(column=0, row=1, padx=10, pady=5, sticky=tk.N+tk.W,)
-        self.stash_browse_text_area.grid(column=0, row=7, padx=10, pady=5, sticky=tk.N+tk.W,)
-        self.char_browse_button.grid(row=1, column=1, pady=5, sticky=tk.N+tk.E,) 
-        self.stash_browse_button.grid(row=7, column=1, pady=5, sticky=tk.N+tk.E,)
-        self.open_files_button.grid(row=8, column=1, pady=10, sticky=tk.S+tk.E)
+        ## Rendering widgets ##
+        #Row 0
         self.char_browse_label.grid(row=0, column=0, padx=10, sticky=tk.S+tk.W)
-        self.stash_browse_label.grid(row=6, column=0, padx=10, sticky=tk.S+tk.W)
-        self.shared_stash_checkbutton.grid(row=5, column=0, padx=5, pady=15, sticky=tk.S+tk.W)
+        #Row 1
+        self.char_browse_text_area.grid(row=1, column=0, padx=10, pady=5, sticky=tk.N+tk.W,)
+        self.char_browse_button.grid(row=1, column=1, pady=5, sticky=tk.N+tk.E,)
+        #Row 2
         self.plugy_stash_checkbutton.grid(row=2, column=0, padx=5, pady=15, sticky=tk.S+tk.W)
-        self.plugy_browse_button.grid(row=4, column=1, pady=10, sticky=tk.S+tk.E)
-        self.plugy_browse_text_area.grid(column=0, row=4, padx=10, pady=5, sticky=tk.N+tk.W,)
+        #Row 3
         self.plugy_browse_label.grid(row=3, column=0, padx=10, sticky=tk.S+tk.W)
-
-
-
-
-
-
-
-
-
-
+        #Row 4
+        self.plugy_browse_text_area.grid(row=4, column=0, padx=10, pady=5, sticky=tk.N+tk.W,)
+        self.plugy_browse_button.grid(row=4, column=1, pady=10, sticky=tk.S+tk.E)
+        #Row 5
+        self.shared_stash_checkbutton.grid(row=5, column=0, padx=5, pady=15, sticky=tk.S+tk.W)
+        #Row 6
+        self.stash_browse_label.grid(row=6, column=0, padx=10, sticky=tk.S+tk.W)
+        #Row 7
+        self.stash_browse_text_area.grid(row=7, column=0, padx=10, pady=5, sticky=tk.N+tk.W,)
+        self.stash_browse_button.grid(row=7, column=1, pady=5, sticky=tk.N+tk.E,)
+        #Row 8
+        self.open_files_button.grid(row=8, column=1, pady=10, sticky=tk.S+tk.E)
 
 
 
@@ -164,9 +163,14 @@ class MainApp(tk.Frame):
                 lg.load_files(char_path, plugy_path, shared_path, is_plugy_added, is_shared_added)
 
 
-if __name__ == "__main__":
+def main():
     root = tk.Tk()
     MainApp(root).grid(column=0, row=0, padx=20, pady=20)
     root.title("Diablo II RuneKeeper")
     root.geometry("600x400")
     root.mainloop()
+
+
+if __name__ == "__main__":
+    main()
+    
