@@ -34,7 +34,8 @@ class MainApp(tk.Frame):
         self.stash_browse_label = tk.Label(self, text="Import your Plugy Shared Stash (.sss) file", state=tk.DISABLED)
         
         ## Submit button
-        self.open_files_button = tk.Button(self, text="Open", command=self.open_files)
+        # self.open_files_button = tk.Button(self, text="Open", command=self.open_files)
+        self.open_files_button = tk.Button(self, text="Open", command=self.open_results_window)
         
         
         
@@ -169,6 +170,25 @@ class MainApp(tk.Frame):
                 is_plugy_added = True
                 is_shared_added = False
                 lg.load_files(char_path, plugy_path, shared_path, is_plugy_added, is_shared_added)
+
+
+    def open_results_window(self):
+        self.results_window = tk.Toplevel()
+        self.new_window = ResultsWindow(self.results_window)
+        self.results_window.geometry("500x400")
+        self.results_window.title("Results")
+
+class ResultsWindow(tk.Frame):
+    def __init__(self, parent, *args, **kwargs):
+        tk.Frame.__init__(self, parent, *args, **kwargs)
+        self.parent = parent
+
+        ##Config
+       
+    
+    
+
+    
 
 
 def main():
