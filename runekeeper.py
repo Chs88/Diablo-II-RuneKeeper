@@ -4,6 +4,7 @@ from tkinter import filedialog
 from tkinter import messagebox
 import os
 from PIL import Image,  ImageTk
+import results_gui as res
 
 THIS_FOLDER = os.path.dirname(os.path.abspath(__file__))
 IMAGE_PATH = f"{THIS_FOLDER}/diablogo.jpg"
@@ -181,22 +182,12 @@ class MainApp(tk.Frame):
             
         except Exception:
             self.results_window = tk.Toplevel(self.parent)
-            self.new_window = ResultsWindow(self.results_window)
+            self.new_window = res.ResultsWindow(self.results_window)
             self.results_window.geometry("500x400")
             self.results_window.title("Results")
 
 
-class ResultsWindow(tk.Frame):
-    def __init__(self, parent,  *args, **kwargs):
-        tk.Frame.__init__(self, parent, *args, **kwargs)
-        self.parent = parent
-
-        ##Config
-       
-    
-    
-
-    
+   
 
 
 def main():
