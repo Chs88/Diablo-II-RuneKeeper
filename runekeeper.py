@@ -9,9 +9,10 @@ THIS_FOLDER = os.path.dirname(os.path.abspath(__file__))
 IMAGE_PATH = f"{THIS_FOLDER}/diablogo.jpg"
 
 class MainApp(tk.Frame):
-    def __init__(self, parent, *args, **kwargs):
+    def __init__(self, parent,  *args, **kwargs,):
         tk.Frame.__init__(self, parent, *args, **kwargs)
         self.parent = parent
+       
         
 
         
@@ -173,13 +174,20 @@ class MainApp(tk.Frame):
 
 
     def open_results_window(self):
-        self.results_window = tk.Toplevel()
-        self.new_window = ResultsWindow(self.results_window)
-        self.results_window.geometry("500x400")
-        self.results_window.title("Results")
+        try: 
+            ## Checks if window is already opened, if it is not, raises an error but the error is handled, by opening it. 
+            if self.results_window.state() == "normal":
+                self.results_window.lift()
+            
+        except Exception:
+            self.results_window = tk.Toplevel(self.parent)
+            self.new_window = ResultsWindow(self.results_window)
+            self.results_window.geometry("500x400")
+            self.results_window.title("Results")
+
 
 class ResultsWindow(tk.Frame):
-    def __init__(self, parent, *args, **kwargs):
+    def __init__(self, parent,  *args, **kwargs):
         tk.Frame.__init__(self, parent, *args, **kwargs)
         self.parent = parent
 
