@@ -36,8 +36,8 @@ class MainApp(tk.Frame):
         self.stash_browse_label = tk.Label(self, text="Import your Plugy Shared Stash (.sss) file", state=tk.DISABLED)
         
         ## Submit button
-        # self.open_files_button = tk.Button(self, text="Open", command=self.open_files)
-        self.open_files_button = tk.Button(self, text="Open", command=self.open_results_window)
+        # self.submit_button = tk.Button(self, text="Submit", command=self.open_files)
+        self.submit_button = tk.Button(self, text="Submit", command=self.open_results_window)
         
         
         
@@ -73,7 +73,7 @@ class MainApp(tk.Frame):
         self.stash_browse_text_area.grid(row=8, column=0, padx=10, pady=5, sticky=tk.N+tk.W,)
         self.stash_browse_button.grid(row=8, column=1, pady=5, sticky=tk.N+tk.E,)
         #Row 9
-        self.open_files_button.grid(row=9, column=1, pady=10, sticky=tk.S+tk.E)
+        self.submit_button.grid(row=9, column=1, pady=10, sticky=tk.S+tk.E)
         
 
 
@@ -108,7 +108,7 @@ class MainApp(tk.Frame):
         self.filename = filedialog.askopenfilename(initialdir=THIS_FOLDER, title="Select a file", filetypes=(("Plugy Shared Stash Files", "*.sss"),("All Files", "*.*")))
         self.stash_browse_text_area.insert(0, self.filename)
 
-    def open_files(self): 
+    def submit_files(self): 
         ##gets paths for stash and char files
         char_path = self.char_browse_text_area.get()
         plugy_path = self.plugy_browse_text_area.get()
