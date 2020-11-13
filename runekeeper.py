@@ -36,7 +36,7 @@ class MainApp(tk.Frame):
         self.stash_browse_label = tk.Label(self, text="Import your Plugy Shared Stash (.sss) file", state=tk.DISABLED)
         
         ## Submit button
-        # self.submit_button = tk.Button(self, text="Submit", command=self.open_files)
+        # self.submit_button = tk.Button(self, text="Submit", command=self.submit_files)
         self.submit_button = tk.Button(self, text="Submit", command=self.open_results_window)
         
         
