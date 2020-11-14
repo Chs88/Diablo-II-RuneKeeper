@@ -36,8 +36,8 @@ class MainApp(tk.Frame):
         self.stash_browse_label = tk.Label(self, text="Import your Plugy Shared Stash (.sss) file", state=tk.DISABLED)
         
         ## Submit button
-        # self.submit_button = tk.Button(self, text="Submit", command=self.submit_files)
-        self.submit_button = tk.Button(self, text="Submit", command=self.open_results_window)
+        self.submit_button = tk.Button(self, text="Submit", command=self.submit_files)
+        # self.submit_button = tk.Button(self, text="Submit", command=self.open_results_window)
         
         
         
@@ -159,19 +159,22 @@ class MainApp(tk.Frame):
         validate_char_path = self.check_file_extension(char_path, ".d2s", "Diablo II save file")
         if self.plugy_stash_checked.get() == 0:
             if validate_char_path == False:
-                is_plugy_added = False
-                is_shared_added = False
-                lg.load_files(char_path, plugy_path, shared_path, is_plugy_added, is_shared_added)
+                query = lg.Query(is_plugy_added = False, 
+                is_shared_added = False, char_path = char_path, plugy_path = plugy_path, shared_path = shared_path)
         elif self.shared_stash_checked.get() == 1:
             if self.check_file_extension(shared_path, ".sss", "Plugy shared stash file") == False:
-                is_plugy_added = True
-                is_shared_added = True
-                lg.load_files(char_path, plugy_path, shared_path, is_plugy_added, is_shared_added)
+                query = lg.Query(is_plugy_added = True, 
+                is_shared_added = True, char_path = char_path, plugy_path = plugy_path, shared_path = shared_path)
         elif self.plugy_stash_checked.get() == 1:
             if self.check_file_extension(plugy_path, ".d2x", "Plugy personal stash file") == False:
-                is_plugy_added = True
-                is_shared_added = False
-                lg.load_files(char_path, plugy_path, shared_path, is_plugy_added, is_shared_added)
+                query = lg.Query(is_plugy_added = True, 
+                is_shared_added = False, char_path = char_path, plugy_path = plugy_path, shared_path = shared_path)
+        ##Handling Unboundlocalerror so I only need to write query.load() once
+        try:             
+            query.load()
+        except UnboundLocalError:
+            pass
+        
 
 
     def open_results_window(self):

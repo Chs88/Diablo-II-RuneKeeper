@@ -1,4 +1,5 @@
 import tkinter as tk
+import logic as lg
 
 class ResultsWindow(tk.Frame):
     def __init__(self, parent,  *args, **kwargs):
@@ -7,7 +8,7 @@ class ResultsWindow(tk.Frame):
         
         ##Declaring widgets
         self.title_label = tk.Label(self.parent, text="Results Page")
-        self.test_button = tk.Button(self.parent, text="test")
+        
 
 
 
@@ -16,7 +17,7 @@ class ResultsWindow(tk.Frame):
 
         ##Rendering widgets
         #Row 0
-        self.title_label.grid(row=0, column=0, padx=10, pady=(5,50), sticky=tk.N, columnspan=2)
+        self.title_label.grid(row=0, column=0, padx=100, pady=10, sticky=tk.N+tk.W+tk.E+tk.S, columnspan=2, )
 
 
-        self.test_button.grid(row=2, column=2)
+        
