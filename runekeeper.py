@@ -190,9 +190,6 @@ class MainApp(tk.Frame):
             self.results_window.title("Results")
 
 
-   
-
-
 def main():
     root = tk.Tk()
     MainApp(root).grid(row=0, column=0, padx=20, pady=10)
