@@ -73,4 +73,9 @@ else:
                     print(item.magic_attrs)
             
 
+        def open_json(self):
+            with open('runewords.json', 'r') as f:
+                all_runewords = json.load(f)
+            return all_runewords
+
 
