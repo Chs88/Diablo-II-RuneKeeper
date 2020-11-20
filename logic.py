@@ -20,16 +20,16 @@ else:
                 self.d2x_file = D2XFile(plugy_path)
                 self.sss_file = SSSFile(shared_path)    
 
-        def load(self):
+        def start(self):
             instance = FindRunes()
             instance.list_runes_inv(self.d2s_file)
-            instance.list_runes_stash(self.d2x_file)
-            # instance.list_runes_shared(self.sss_file)
+            if (self.is_plugy_added == True) and (self.is_shared_added == False):
+                instance.list_runes_stash(self.d2x_file)
+            elif (self.is_plugy_added == True) and (self.is_shared_added == True):
+                instance.list_runes_stash(self.d2x_file)
+                instance.list_runes_shared(self.sss_file)
             instance.sum_runes()
             print(instance.runes_total)
-            # instance.list_all(self.d2x_file)
-
-
 
 
     class FindRunes():

@@ -169,9 +169,9 @@ class MainApp(tk.Frame):
             if self.check_file_extension(plugy_path, ".d2x", "Plugy personal stash file") == False:
                 query = lg.Query(is_plugy_added = True, 
                 is_shared_added = False, char_path = char_path, plugy_path = plugy_path, shared_path = shared_path)
-        ##Handling Unboundlocalerror so I only need to write query.load() once
+        ##Handling Unboundlocalerror so I only need to write query.start() once
         try:             
-            query.load()
+            query.start()
         except UnboundLocalError:
             pass
         
