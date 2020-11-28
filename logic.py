@@ -92,6 +92,7 @@ else:
                 print(checklist['name'])
                 print(runeword)
                 print(checklist['type'])
+                print("------------------")
             
 
         def list_all_available(self):
