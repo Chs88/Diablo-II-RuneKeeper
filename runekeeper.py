@@ -5,6 +5,7 @@ from tkinter import messagebox
 import os
 from PIL import Image,  ImageTk
 import results_gui as res
+from d2lib.files import SSSFile, D2XFile, D2SFile
 
 THIS_FOLDER = os.path.dirname(os.path.abspath(__file__))
 IMAGE_PATH = f"{THIS_FOLDER}/diablogo.jpg"
@@ -36,8 +37,8 @@ class MainApp(tk.Frame):
         self.stash_browse_label = tk.Label(self, text="Import your Plugy Shared Stash (.sss) file", state=tk.DISABLED)
         
         ## Submit button
-        # self.submit_button = tk.Button(self, text="Submit", command=self.submit_files)
-        self.submit_button = tk.Button(self, text="Submit", command=self.open_results_window)
+        self.submit_button = tk.Button(self, text="Submit", command=self.get_file_path)
+        # self.submit_button = tk.Button(self, text="Submit", command=self.open_results_window)
         
         
         
@@ -108,7 +109,7 @@ class MainApp(tk.Frame):
         self.filename = filedialog.askopenfilename(initialdir=THIS_FOLDER, title="Select a file", filetypes=(("Plugy Shared Stash Files", "*.sss"),("All Files", "*.*")))
         self.stash_browse_text_area.insert(0, self.filename)
 
-    def submit_files(self): 
+    def get_file_path(self): 
         ##gets paths for stash and char files
         char_path = self.char_browse_text_area.get()
         plugy_path = self.plugy_browse_text_area.get()
@@ -159,25 +160,27 @@ class MainApp(tk.Frame):
         validate_char_path = self.check_file_extension(char_path, ".d2s", "Diablo II save file")
         if self.plugy_stash_checked.get() == 0:
             if validate_char_path == False:
-                query = lg.Query(is_plugy_added = False, 
+                query = Query(is_plugy_added = False, 
                 is_shared_added = False, char_path = char_path, plugy_path = plugy_path, shared_path = shared_path)
         elif self.shared_stash_checked.get() == 1:
             if self.check_file_extension(shared_path, ".sss", "Plugy shared stash file") == False:
-                query = lg.Query(is_plugy_added = True, 
+                query = Query(is_plugy_added = True, 
                 is_shared_added = True, char_path = char_path, plugy_path = plugy_path, shared_path = shared_path)
         elif self.plugy_stash_checked.get() == 1:
             if self.check_file_extension(plugy_path, ".d2x", "Plugy personal stash file") == False:
-                query = lg.Query(is_plugy_added = True, 
+                query = Query(is_plugy_added = True, 
                 is_shared_added = False, char_path = char_path, plugy_path = plugy_path, shared_path = shared_path)
         ##Handling Unboundlocalerror so I only need to write query.start() once
-        try:             
-            query.start()
+        try:
+            results = query.start()
+            self.open_results_window(results)
         except UnboundLocalError:
             pass
         
 
 
-    def open_results_window(self):
+    def open_results_window(self, results):
+        results = results ## The query to display on the results window
         try: 
             ## Checks if window is already opened, if it is not, raises an error but the error is handled, by opening it. 
             if self.results_window.state() == "normal":
@@ -185,10 +188,40 @@ class MainApp(tk.Frame):
             
         except Exception:
             self.results_window = tk.Toplevel(self.parent)
-            self.new_window = res.ResultsWindow(self.results_window)
+            self.new_window = res.ResultsWindow(self.results_window, results)
             self.results_window.geometry("500x400")
             self.results_window.title("Results")
 
+
+class Query():
+        def __init__(self, is_plugy_added, is_shared_added, char_path, plugy_path, shared_path):
+            self.is_plugy_added = is_plugy_added
+            self.is_shared_added = is_shared_added
+            self.d2s_file = D2SFile(char_path)
+            self.d2x_file = None
+            self.sss_file = None
+            if is_plugy_added == True:
+                self.d2x_file = D2XFile(plugy_path)
+                self.sss_file = None
+            if is_shared_added == True:
+                self.d2x_file = D2XFile(plugy_path)
+                self.sss_file = SSSFile(shared_path)
+            self.instance = lg.FindRunes()
+            self.results = self.instance.results
+
+        def start(self):
+            instance = self.instance
+            instance.list_runes_inv(self.d2s_file)
+            if (self.is_plugy_added == True) and (self.is_shared_added == False):
+                instance.list_runes_stash(self.d2x_file)
+            elif (self.is_plugy_added == True) and (self.is_shared_added == True):
+                instance.list_runes_stash(self.d2x_file)
+                instance.list_runes_shared(self.sss_file)
+            instance.sum_runes()
+            # print(instance.runes_total) ## not needed in final version
+            instance.list_all_available()
+            results = instance.results
+            return results
 
 def main():
     root = tk.Tk()

@@ -1,39 +1,12 @@
 from d2lib.files import SSSFile, D2XFile, D2SFile
 from collections import Counter
 import json
+import results_gui as res
 
 
 if __name__ == "__main__":
     print("Access forbidden") ## not necessary but fun
 else:
-    class Query():
-        def __init__(self, is_plugy_added, is_shared_added, char_path, plugy_path, shared_path):
-            self.is_plugy_added = is_plugy_added
-            self.is_shared_added = is_shared_added
-            self.d2s_file = D2SFile(char_path)
-            self.d2x_file = None
-            self.sss_file = None
-            if is_plugy_added == True:
-                self.d2x_file = D2XFile(plugy_path)
-                self.sss_file = None
-            if is_shared_added == True:
-                self.d2x_file = D2XFile(plugy_path)
-                self.sss_file = SSSFile(shared_path)    
-
-        def start(self):
-            instance = FindRunes()
-            instance.list_runes_inv(self.d2s_file)
-            if (self.is_plugy_added == True) and (self.is_shared_added == False):
-                instance.list_runes_stash(self.d2x_file)
-            elif (self.is_plugy_added == True) and (self.is_shared_added == True):
-                instance.list_runes_stash(self.d2x_file)
-                instance.list_runes_shared(self.sss_file)
-            instance.sum_runes()
-            # print(instance.runes_total) ## not needed in final version
-            instance.list_all_available()
-            
-
-
     class FindRunes():
         def __init__(self):
             self.runes_in_inventory = []
@@ -41,6 +14,7 @@ else:
             self.runes_in_shared = []
             self.runes_total = []
             self.all_runewords = self.open_json()
+            self.results = []
 
         
         def list_runes_inv(self, d2s_file):
@@ -89,10 +63,11 @@ else:
                 if rune in self.runes_total:
                     temp_counter_list.append(rune)
             if len(runeword) == len(temp_counter_list):
-                print(checklist['name'])
-                print(runeword)
-                print(checklist['type'])
-                print("------------------")
+                self.results.append(checklist['name'])
+                self.results.append(runeword)
+                self.results.append(checklist['type'])
+                
+            
             
 
         def list_all_available(self):
