@@ -20,7 +20,7 @@ class ResultsWindow(tk.Frame):
         self.scrollbar.config(command=self.text_window.yview)
         self.text_window.config(yscrollcommand=self.scrollbar.set)
         self.toggle_read_only()
-        self.text_window.insert(tk.END, self.results + '\n') ##not working for some reason
+        self.text_window.insert(tk.END, self.results) ##not working for some reason
         self.toggle_read_only()
 
 
